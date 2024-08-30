@@ -1,0 +1,28 @@
+[cmake]
+version = "3.15"
+cmkr-include = "cmake/cmkr.cmake"
+
+[project]
+name = "slowedify"
+languages = ["C", "CXX"]
+description = "slowedify is a tool to change the speed of songs on Spotify."
+
+[target.subhook]
+type    = "static"
+alias   = "Zeex::subhook"
+sources = ["vendor/subhook/subhook.c"]
+headers = ["vendor/subhook/subhook.h"]
+
+msvc.compile-options     = ["/MP"]
+msvc.compile-definitions = ["SUBHOOK_STATIC"]
+
+[target.slowedify]
+type                = "shared"
+sources             = ["src/**.cpp", "src/**.h"]
+include-directories = ["src"]
+compile-features    = ["cxx_std_20"]
+compile-definitions = ["NOMINMAX"]
+link-libraries      = ["Zeex::subhook"]
+
+msvc.compile-options     = ["/MP"]
+msvc.compile-definitions = ["SUBHOOK_STATIC"]
