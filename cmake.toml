@@ -19,7 +19,7 @@ msvc.compile-definitions = ["SUBHOOK_STATIC"]
 [target.slowedify]
 type                = "shared"
 sources             = ["src/**.cpp", "src/**.h"]
-include-directories = ["src"]
+include-directories = ["src", "vendor"]
 compile-features    = ["cxx_std_20"]
 compile-definitions = ["NOMINMAX"]
 link-libraries      = ["Zeex::subhook"]

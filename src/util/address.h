@@ -133,7 +133,7 @@ public:
 	template < typename t = address_t >
 	__forceinline t rel32( size_t offset ) {
 		uintptr_t out;
-		uint32_t  r;
+		int32_t   r;  // this is signed!
 
 		if ( !addr )
 			return t{ };
@@ -141,7 +141,7 @@ public:
 		out = addr + offset;
 
 		// get rel32 offset.
-		r = *( uint32_t* ) out;
+		r = *( int32_t* ) out;
 		if ( !r )
 			return t{ };
 
@@ -158,11 +158,5 @@ public:
 			return;
 
 		*( t* ) addr = value;
-	}
-
-	// relative virtual address.
-	template < typename t = address_t >
-	static __forceinline t RVA( address_t base, size_t offset ) {
-		return base.as< t >( offset );
 	}
 };

@@ -29,7 +29,7 @@ project(slowedify
 		C
 		CXX
 	DESCRIPTION
-		"slowedify is a tool to change the speed of songs on Spotify."
+		"slowedify is an extension to change the speed of songs on Spotify."
 )
 
 # Target: subhook
@@ -60,6 +60,8 @@ endif()
 # Target: slowedify
 set(slowedify_SOURCES
 	cmake.toml
+	"src/core/hooks.cpp"
+	"src/core/hooks.h"
 	"src/core/main.cpp"
 	"src/util/address.h"
 	"src/util/util.cpp"
@@ -93,6 +95,7 @@ endif()
 
 target_include_directories(slowedify PUBLIC
 	src
+	vendor
 )
 
 target_link_libraries(slowedify PUBLIC

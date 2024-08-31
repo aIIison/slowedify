@@ -1,3 +1,4 @@
+#include "hooks.h"
 #include "util/util.h"
 
 #include <chrono>
@@ -8,7 +9,9 @@ unsigned long WINAPI initialize( void* instance ) {
 	util::console::alloc( );
 #endif
 
-	util::console::log( "hey!\n" );
+	util::console::log( "[+] allocated console.\n" );
+
+	hooks::initialize( );
 
 	while ( !GetAsyncKeyState( VK_END ) )
 		std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );
@@ -17,6 +20,8 @@ unsigned long WINAPI initialize( void* instance ) {
 }
 
 unsigned long WINAPI release( ) {
+	hooks::uninitialize( );
+
 #ifdef _DEBUG
 	util::console::free( );
 #endif
