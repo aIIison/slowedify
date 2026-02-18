@@ -4,6 +4,25 @@
 #include <chrono>
 #include <thread>
 
+bool b_release = false;
+
+util::console::cmd_t release_cmd( "release", "release - release the dll from the program.", []( util::console::cmd_t::args_t args ) -> bool {
+#ifdef _DEBUG
+	util::console::free( );
+#endif
+
+	b_release = true;
+	return true;
+} );
+
+util::console::cmd_t speed( "speed", "speed <speed> - set playback speed.", []( util::console::cmd_t::args_t args ) -> bool {
+	if ( args.size( ) > 1 ) {
+		hooks::set_speed( std::stof( args[ 1 ] ) );
+		return true;
+	}
+	return false;
+} );
+
 unsigned long WINAPI initialize( void* instance ) {
 #ifdef _DEBUG
 	util::console::alloc( );
@@ -13,7 +32,7 @@ unsigned long WINAPI initialize( void* instance ) {
 
 	hooks::initialize( );
 
-	while ( !GetAsyncKeyState( VK_END ) )
+	while ( !b_release )
 		std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );
 
 	FreeLibraryAndExitThread( static_cast< HMODULE >( instance ), 0 );
