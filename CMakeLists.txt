@@ -81,6 +81,12 @@ target_compile_features(slowedify PUBLIC
 	cxx_std_20
 )
 
+if(MSVC) # msvc
+	target_compile_options(slowedify PUBLIC
+		"/MP"
+	)
+endif()
+
 target_include_directories(slowedify PUBLIC
 	src
 	vendor

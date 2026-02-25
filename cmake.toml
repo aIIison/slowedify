@@ -24,12 +24,14 @@ compile-features    = ["cxx_std_20"]
 compile-definitions = ["NOMINMAX"]
 link-libraries      = ["Zeex::subhook"]
 
+msvc.compile-options = ["/MP"]
+
 [target.loader]
 type             = "executable"
 sources          = ["src/loader/main.cpp"]
 compile-features = ["cxx_std_20"]
 
-msvc.compile-options     = ["/MP"]
+msvc.compile-options = ["/MP"]
 
 [[install]]
 targets = ["slowedify", "loader"]
