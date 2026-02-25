@@ -18,11 +18,19 @@ msvc.compile-definitions = ["SUBHOOK_STATIC"]
 
 [target.slowedify]
 type                = "shared"
-sources             = ["src/**.cpp", "src/**.h"]
+sources             = ["src/core/**.cpp", "src/core/**.h", "src/util/**.cpp", "src/util/**.h"]
 include-directories = ["src", "vendor"]
 compile-features    = ["cxx_std_20"]
 compile-definitions = ["NOMINMAX"]
 link-libraries      = ["Zeex::subhook"]
 
+[target.loader]
+type             = "executable"
+sources          = ["src/loader/main.cpp"]
+compile-features = ["cxx_std_20"]
+
 msvc.compile-options     = ["/MP"]
-msvc.compile-definitions = ["SUBHOOK_STATIC"]
+
+[[install]]
+targets = ["slowedify", "loader"]
+destination = "$ENV{APPDATA}/Spotify"

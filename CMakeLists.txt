@@ -77,21 +77,9 @@ target_compile_definitions(slowedify PUBLIC
 	NOMINMAX
 )
 
-if(MSVC) # msvc
-	target_compile_definitions(slowedify PUBLIC
-		SUBHOOK_STATIC
-	)
-endif()
-
 target_compile_features(slowedify PUBLIC
 	cxx_std_20
 )
-
-if(MSVC) # msvc
-	target_compile_options(slowedify PUBLIC
-		"/MP"
-	)
-endif()
 
 target_include_directories(slowedify PUBLIC
 	src
@@ -100,4 +88,40 @@ target_include_directories(slowedify PUBLIC
 
 target_link_libraries(slowedify PUBLIC
 	Zeex::subhook
+)
+
+# Target: loader
+set(loader_SOURCES
+	cmake.toml
+	"src/loader/main.cpp"
+)
+
+add_executable(loader)
+
+target_sources(loader PRIVATE ${loader_SOURCES})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${loader_SOURCES})
+
+target_compile_features(loader PRIVATE
+	cxx_std_20
+)
+
+if(MSVC) # msvc
+	target_compile_options(loader PRIVATE
+		"/MP"
+	)
+endif()
+
+get_directory_property(CMKR_VS_STARTUP_PROJECT DIRECTORY ${PROJECT_SOURCE_DIR} DEFINITION VS_STARTUP_PROJECT)
+if(NOT CMKR_VS_STARTUP_PROJECT)
+	set_property(DIRECTORY ${PROJECT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT loader)
+endif()
+
+install(
+	TARGETS
+		slowedify
+		loader
+	DESTINATION
+		"$ENV{APPDATA}/Spotify"
+	COMPONENT
+		slowedify
 )
