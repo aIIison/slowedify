@@ -17,7 +17,14 @@ util::console::cmd_t release_cmd( "release", "release - release the dll from the
 
 util::console::cmd_t speed( "speed", "speed <speed> - set playback speed.", []( util::console::cmd_t::args_t args ) -> bool {
 	if ( args.size( ) > 1 ) {
-		hooks::set_speed( std::stof( args[ 1 ] ) );
+		auto speed = std::stof( args[ 1 ] );
+		if ( speed > 1.f ) {
+			speed = 1.f;
+			util::console::log_error( "[!] playback speed above 1.0 is not supported!\n" );
+		}
+
+		hooks::set_speed( speed );
+
 		return true;
 	}
 	return false;
